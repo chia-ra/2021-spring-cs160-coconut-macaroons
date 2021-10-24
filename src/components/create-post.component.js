@@ -15,6 +15,7 @@ export default class CreateExercises extends Component {
 
     this.state = {
       username: '',
+      image: '',
       description: '',
       duration: 0,
       date: new Date(),
@@ -67,6 +68,7 @@ export default class CreateExercises extends Component {
 
     const exercise = {
       username: this.state.username,
+      image: this.state.description,
       description: this.state.description,
       duration: this.state.duration,
       date: this.state.date
@@ -84,10 +86,10 @@ export default class CreateExercises extends Component {
   render() {
      return (
      <div>
-       <h3>Create New Exercise Log</h3>
+       <h3>Create New Listing</h3>
        <form onSubmit={this.onSubmit}>
          <div className="form-group">
-           <label>Username: </label>
+           <label>Category: </label>
            <select ref="userInput"
                required
                className="form-control"
@@ -104,6 +106,15 @@ export default class CreateExercises extends Component {
            </select>
          </div>
          <div className="form-group">
+           <label>Image: </label>
+           <input  type={Image}
+               required
+               className="form-control"
+               value={this.state.description}
+               onChange={this.onChangeDescription}
+               />
+         </div>
+         <div className="form-group">
            <label>Description: </label>
            <input  type="text"
                required
@@ -113,7 +124,7 @@ export default class CreateExercises extends Component {
                />
          </div>
          <div className="form-group">
-           <label>Duration (in minutes): </label>
+           <label>Price: </label>
            <input
                type="text"
                className="form-control"
@@ -122,7 +133,7 @@ export default class CreateExercises extends Component {
                />
          </div>
          <div className="form-group">
-           <label>Date: </label>
+           <label>Post Date: </label>
            <div>
              <DatePicker
                selected={this.state.date}
@@ -132,7 +143,7 @@ export default class CreateExercises extends Component {
          </div>
 
          <div className="form-group">
-           <input type="submit" value="Create Exercise Log" className="btn btn-primary" />
+           <input type="submit" value="Create Listing" className="btn btn-primary" />
          </div>
        </form>
      </div>
