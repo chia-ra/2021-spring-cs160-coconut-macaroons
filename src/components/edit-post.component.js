@@ -8,6 +8,7 @@ export default class EditExercise extends Component {
     super(props);
 
     this.onChangeUsername = this.onChangeUsername.bind(this);
+    this.onChangeImage = this.onChangeImage.bind(this);
     this.onChangeDescription = this.onChangeDescription.bind(this);
     this.onChangeDuration = this.onChangeDuration.bind(this);
     this.onChangeDate = this.onChangeDate.bind(this);
@@ -15,6 +16,7 @@ export default class EditExercise extends Component {
 
     this.state = {
       username: '',
+      image: '',
       description: '',
       duration: 0,
       date: new Date(),
@@ -27,6 +29,7 @@ export default class EditExercise extends Component {
       .then(response => {
         this.setState({
           username: response.data.username,
+          image: response.data.image,
           description: response.data.description,
           duration: response.data.duration,
           date: new Date(response.data.date)
@@ -48,6 +51,12 @@ export default class EditExercise extends Component {
         console.log(error);
       })
 
+  }
+
+  onChangeImage(e) {
+    this.setState({
+      image: e.target.value
+    })
   }
 
   onChangeUsername(e) {
@@ -79,6 +88,7 @@ export default class EditExercise extends Component {
 
     const exercise = {
       username: this.state.username,
+      image: this.state.image,
       description: this.state.description,
       duration: this.state.duration,
       date: this.state.date
@@ -113,6 +123,15 @@ export default class EditExercise extends Component {
                 })
               }
           </select>
+        </div>
+        <div className="form-group">
+          <label>Image: </label>
+          <input  type="text"
+              required
+              className="form-control"
+              value={this.state.image}
+              onChange={this.onChangeImage}
+              />
         </div>
         <div className="form-group">
           <label>Description: </label>
