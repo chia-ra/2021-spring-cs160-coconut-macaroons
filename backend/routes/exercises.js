@@ -1,5 +1,10 @@
 const router = require('express').Router();
+let multer = require('multer'),
+mongoose = require('mongoose'),
+uuidv4 = require('uuid/v4');
 let Exercise = require('../models/exercise.model');
+
+const DIR = './public/';
 
 router.route('/').get((req, res) => {
   Exercise.find()
@@ -7,7 +12,31 @@ router.route('/').get((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.route('/add').post((req, res) => {
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+      cb(null, DIR);
+  },
+  filename: (req, file, cb) => {
+      const fileName = file.originalname.toLowerCase().split(' ').join('-');
+      cb(null, uuidv4() + '-' + fileName)
+  }
+});
+
+var upload = multer({
+  storage: storage,
+  fileFilter: (req, file, cb) => {
+      if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
+          cb(null, true);
+      } else {
+          cb(null, false);
+          return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
+      }
+  }
+});
+
+router.route('/add').post('/user-profile', upload.single('profileImg'), (req, res, next) => {
+  const url = req.protocol + '://' + req.get('host')
+
   const username = req.body.username;
   const image = req.body.image;
   const description = req.body.description;
@@ -16,7 +45,7 @@ router.route('/add').post((req, res) => {
 
   const newExercise = new Exercise({
     username,
-    image,
+    profileImg: url + '/public/' + req.file.filename,
     description,
     duration,
     date,

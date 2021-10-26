@@ -7,6 +7,9 @@ export default class CreateExercises extends Component {
   constructor(props) {
     super(props);
 
+    this.onFileChange = this.onFileChange.bind(this);
+
+
     this.onChangeUsername = this.onChangeUsername.bind(this);
     this.onChangeImage = this.onChangeImage.bind(this);
     this.onChangeDescription = this.onChangeDescription.bind(this);
@@ -22,6 +25,21 @@ export default class CreateExercises extends Component {
       date: new Date(),
       users: []
     }
+    
+  }
+
+  onFileChange(e) {
+    this.setState({ image: e.target.files[0] })
+  }
+
+  onSubmit(e) {
+    e.preventDefault()
+    const formData = new FormData()
+    formData.append('profileImg', this.state.image)
+    axios.post("http://localhost:5000/exercises/", formData, {
+    }).then(res => {
+        console.log(res)
+    })
   }
 
   componentDidMount() {
@@ -113,12 +131,9 @@ export default class CreateExercises extends Component {
          </div>
          <div className="form-group">
            <label>Image: </label>
-           <input  type="text"
-               required
-               className="form-control"
-               value={this.state.image}
-               onChange={this.onChangeImage}
-               />
+           <input type="file" onChange={this.onFileChange} />
+           
+               
          </div>
          <div className="form-group">
            <label>Description: </label>

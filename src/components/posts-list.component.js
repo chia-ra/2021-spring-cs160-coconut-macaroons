@@ -5,12 +5,11 @@ import axios from 'axios';
 const Exercise = props => (
   <tr>
     <td>{props.exercise.username}</td>
-    <td>{props.exercise.image}</td>
     <td>{props.exercise.description}</td>
     <td>{props.exercise.duration}</td>
     <td>{props.exercise.date.substring(0,10)}</td>
     <td>
-      <Link to={"/edit/"+props.exercise._id}>View Listing</Link> | <a href="#" onClick={() => { props.deleteExercise(props.exercise._id) }}>delete</a>
+      <Link to={"/edit/"+props.exercise._id}>edit</Link> | <a href="#" onClick={() => { props.deleteExercise(props.exercise._id) }}>delete</a>
     </td>
   </tr>
 )
@@ -52,15 +51,14 @@ export default class ExercisesList extends Component {
   render() {
     return (
       <div>
-        <h3>Posts</h3>
+        <h3>Logged Exercises</h3>
         <table className="table">
           <thead className="thead-light">
             <tr>
-              <th>Category</th>
-              <th>Image</th>
+              <th>Username</th>
               <th>Description</th>
-              <th>Price</th>
-              <th>Post Date</th>
+              <th>Duration</th>
+              <th>Date</th>
               <th>Actions</th>
             </tr>
           </thead>
