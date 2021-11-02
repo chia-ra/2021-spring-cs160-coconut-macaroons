@@ -1,58 +1,56 @@
 const router = require('express').Router();
-let Exercise = require('../models/exercise.model');
+let listing = require('../models/listing.model');
 
 router.route('/').get((req, res) => {
-  Exercise.find()
-    .then(exercises => res.json(exercises))
+  listing.find()
+    .then(listings => res.json(listings))
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
 router.route('/add').post((req, res) => {
-  const username = req.body.username;
+  const category = req.body.category;
   const image = req.body.image;
   const description = req.body.description;
-  const duration = Number(req.body.duration);
+  const price = Number(req.body.price);
   const date = Date.parse(req.body.date);
 
-  const newExercise = new Exercise({
-    username,
+  const newlisting = new listing({
+    category,
     image,
     description,
-    duration,
+    price,
     date,
   });
 
-  newExercise.save()
-  .then(() => res.json('Exercise added!'))
+  newlisting.save()
+  .then(() => res.json('listing added!'))
   .catch(err => res.status(400).json('Error: ' + err));
 });
 
 router.route('/:id').get((req, res) => {
-  Exercise.findById(req.params.id)
-    .then(exercise => res.json(exercise))
+  listing.findById(req.params.id)
+    .then(listing => res.json(listing))
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
 router.route('/:id').delete((req, res) => {
-  Exercise.findByIdAndDelete(req.params.id)
-    .then(() => res.json('Exercise deleted.'))
+  listing.findByIdAndDelete(req.params.id)
+    .then(() => res.json('listing deleted.'))
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
 router.route('/update/:id').post((req, res) => {
-  Exercise.findById(req.params.id)
-    .then(exercise => {
-      exercise.username = req.body.username;
-      exercise.image = req.body.image;
-      exercise.description = req.body.description;
-      exercise.duration = Number(req.body.duration);
-      exercise.date = Date.parse(req.body.date);
-
-      exercise.save()
-        .then(() => res.json('Exercise updated!'))
+  listing.findById(req.params.id)
+    .then(listing => {
+      listing.category = req.body.category;
+      listing.image = req.body.image;
+      listing.description = req.body.description;
+      listing.price = Number(req.body.price);
+      listing.date = Date.parse(req.body.date);
+      listing.save()
+        .then(() => res.json('listing updated!'))
         .catch(err => res.status(400).json('Error: ' + err));
     })
     .catch(err => res.status(400).json('Error: ' + err));
 });
-
 module.exports = router;

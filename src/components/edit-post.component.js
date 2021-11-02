@@ -7,18 +7,18 @@ export default class EditExercise extends Component {
   constructor(props) {
     super(props);
 
-    this.onChangeUsername = this.onChangeUsername.bind(this);
+    this.onChangeCategory = this.onChangeCategory.bind(this);
     this.onChangeImage = this.onChangeImage.bind(this);
     this.onChangeDescription = this.onChangeDescription.bind(this);
-    this.onChangeDuration = this.onChangeDuration.bind(this);
+    this.onChangePrice = this.onChangePrice.bind(this);
     this.onChangeDate = this.onChangeDate.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
 
     this.state = {
-      username: '',
+      category: '',
       image: '',
       description: '',
-      duration: 0,
+      price: 0,
       date: new Date(),
       users: []
     }
@@ -28,10 +28,10 @@ export default class EditExercise extends Component {
     axios.get('http://localhost:5000/exercises/'+this.props.match.params.id)
       .then(response => {
         this.setState({
-          username: response.data.username,
+          category: response.data.category,
           image: response.data.image,
           description: response.data.description,
-          duration: response.data.duration,
+          price: response.data.price,
           date: new Date(response.data.date)
         })
       })
@@ -43,7 +43,7 @@ export default class EditExercise extends Component {
       .then(response => {
         if (response.data.length > 0) {
           this.setState({
-            users: response.data.map(user => user.username),
+            users: response.data.map(user => user.category),
           })
         }
       })
@@ -53,9 +53,9 @@ export default class EditExercise extends Component {
 
   }
 
-  onChangeUsername(e) {
+  onChangeCategory(e) {
     this.setState({
-      username: e.target.value
+      category: e.target.value
     })
   }
 
@@ -70,9 +70,9 @@ export default class EditExercise extends Component {
     })
   }
 
-  onChangeDuration(e) {
+  onChangePrice(e) {
     this.setState({
-      duration: e.target.value
+      price: e.target.value
     })
   }
 
@@ -86,10 +86,10 @@ export default class EditExercise extends Component {
     e.preventDefault();
 
     const exercise = {
-      username: this.state.username,
+      category: this.state.category,
       image: this.state.image,
       description: this.state.description,
-      duration: this.state.duration,
+      price: this.state.price,
       date: this.state.date
     }
 
@@ -111,8 +111,8 @@ export default class EditExercise extends Component {
           <select ref="userInput"
               required
               className="form-control"
-              value={this.state.username}
-              onChange={this.onChangeUsername}>
+              value={this.state.category}
+              onChange={this.onChangeCategory}>
               {
                 this.state.users.map(function(user) {
                   return <option
@@ -146,8 +146,8 @@ export default class EditExercise extends Component {
           <input
               type="text"
               className="form-control"
-              value={this.state.duration}
-              onChange={this.onChangeDuration}
+              value={this.state.price}
+              onChange={this.onChangePrice}
               />
         </div>
         <div className="form-group">
