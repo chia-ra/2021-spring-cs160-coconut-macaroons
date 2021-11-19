@@ -1,0 +1,32 @@
+<% include ../partials/header %>
+
+<div class = "container">
+    <header class = "jumbotron">
+        <div class = "container">
+            <h1>Welcome to HoneyComb!</h1>
+            <p> Feel free to view and add your listings!</p>
+            <p>
+                <a href = "/apparel/new" class = "btn btn-primary btn-lg"> Submit a new Listing! </a>
+            </p>
+        </div>
+    </header>
+
+    <div class = "row text-center" style ="display:flex; flex-wrap: wrap;" >
+        <% apparel.forEach( function(apparel){ %>
+            <div class = "col-md-3 col-sm-6">
+                <div class = "thumbnail">
+                    <img src = "<%= apparel.image %>">
+                    <div class = "caption">
+                        <h4> <%= apparel.name %></h4>
+                    </div>
+                    <p>
+                        <a href = "/apparel/<%= apparel.id %>" class = "btn btn-primary">More Info</a>
+                    </p>
+                </div>
+            </div>
+        <% });%>
+    </div>
+
+
+</div>
+<% include ../partials/footer %>
