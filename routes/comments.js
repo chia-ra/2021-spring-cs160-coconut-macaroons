@@ -1,12 +1,10 @@
 var express = require("express");
-
 var router = express.Router();
 var apparel = require("../models/apparel");
 var Comment = require("../models/comments");
+var middleware = require("../middleware")
 
-
-
-router.get("/apparel/:id/comments/new", function(req, res){
+router.get("/apparel/:id/comments/new",middleware.isLoggedIn, function(req, res){
     apparel.findById(req.params.id, function(err, foundapparel){
         if(err){
             console.log(err);
@@ -16,7 +14,7 @@ router.get("/apparel/:id/comments/new", function(req, res){
     });
 });
 
-router.post("/apparel/:id/comments", function(req, res){
+router.post("/apparel/:id/comments", middleware.isLoggedIn, function(req, res){
     apparel.findById(req.params.id, function(err, foundapparel){
        if(err){
            console.log(err);
@@ -30,29 +28,29 @@ router.post("/apparel/:id/comments", function(req, res){
                     newComment.author.id = req.user._id;
                     newComment.author.username = req.user.username;
                     //save comment
-                   newComment.save();
-                   foundapparel.comments.push(newComment);
-                   foundapparel.save();
-                   req.flash("success", "Successfully added Comment");
-                   console.log(newComment);
-                   res.redirect('/apparel/' + foundapparel._id);
-                }
-
+                    newComment.save();
+                    foundapparel.comments.push(newComment);
+                    foundapparel.save();
+                    req.flash("success", "Successfully added Comment");
+                    console.log(newComment);
+                    res.redirect('/apparel/' + foundapparel._id);
+                }           
+               
            })
-       }
+       } 
 
     });
 });
 
-router.get("/apparel/:id/comments/:comment_id/edit", function(req, res){
+router.get("/apparel/:id/comments/:comment_id/edit",middleware.checkCommentOwnership, function(req, res){
     Comment.findById(req.params.comment_id, function(err, foundComment) {
         if(err){
             console.log(err);
         }else{
             res.render("comments/edit",{apparel_id: req.params.id,comment:foundComment});
-        }
+        }        
     });
-
+    
 });
 
 router.put("/apparel/:id/comments/:comment_id", function(req,res){
@@ -64,11 +62,11 @@ router.put("/apparel/:id/comments/:comment_id", function(req,res){
              req.flash("success", "Successfully updated Comment");
              res.redirect('/apparel/' + req.params.id);
         }
-
+        
     });
 });
 
-router.delete("/apparel/:id/comments/:comment_id", function(req, res){
+router.delete("/apparel/:id/comments/:comment_id",middleware.checkCommentOwnership, function(req, res){
    Comment.findByIdAndRemove(req.params.comment_id, function(err, deletedComment){
        if(err){
            console.log(err);
@@ -76,6 +74,7 @@ router.delete("/apparel/:id/comments/:comment_id", function(req, res){
             req.flash("success", "Successfully deleted Comment");
             res.redirect('/apparel/' + req.params.id);
        }
-   })
+   }) 
 });
 module.exports = router;
+    

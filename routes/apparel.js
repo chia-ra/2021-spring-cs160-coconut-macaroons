@@ -1,10 +1,11 @@
 var express = require("express");
 var router = express.Router();
 var apparel = require("../models/apparel")
+var middleware = require("../middleware")
 
 
 router.get("/", function(req, res){
-   res.render("landing");
+   res.render("landing"); 
 });
 
 router.get("/apparel", function(req, res){
@@ -17,22 +18,22 @@ router.get("/apparel", function(req, res){
     });
 });
 
-
-router.get("/apparel/new", function(req, res){
-   res.render("apparel/new");
+ 
+router.get("/apparel/new",middleware.isLoggedIn, function(req, res){
+   res.render("apparel/new"); 
 });
 
 router.post("/apparel", function(req, res){
    var name = req.body.name;
-   var image = req.body.image;
+   var image = req.body.image; 
    var description = req.body.description;
    var author = {
         id: req.user._id,
         username: req.user.username
     };
-   //create new campground
-   var Newapparel = {name: name, image: image, description:description, author:author};
-   apparel.create(Newapparel, function(err, newlyCreated){
+   //create new Listing
+   var newListing = {name: name, image: image, description:description, author:author};
+   apparel.create(newListing, function(err, newlyCreated){
         if(err){
             console.log(err);
         }else{
@@ -51,10 +52,10 @@ router.get("/apparel/:id", function(req, res){
             res.render("apparel/show", {apparel:foundapparel});
        }
     });
-
+    
 });
 
-router.get("/apparel/:id/edit", function(req, res){
+router.get("/apparel/:id/edit",middleware.checkapparelOwnership, function(req, res){
     apparel.findById(req.params.id, function(err, foundapparel){
             if(err){
                 console.log(err);
@@ -77,7 +78,7 @@ router.put("/apparel/:id" , function(req, res){
     });
 });
 
-router.delete("/apparel/:id", function(req, res){
+router.delete("/apparel/:id",middleware.checkapparelOwnership, function(req, res){
     apparel.findByIdAndRemove(req.params.id, function(err, removedapparel){
         if(err){
             console.log(err);
@@ -85,7 +86,8 @@ router.delete("/apparel/:id", function(req, res){
             req.flash("success", "Apparel deleted!");
             res.redirect("/apparel");
         }
-   });
+   }); 
 });
+
 
 module.exports = router;
