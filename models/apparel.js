@@ -19,4 +19,4 @@ var apparelSchema = new mongoose.Schema({
    ]
 });
 
-module.exports = mongoose.model("Post", apparelSchema);
+module.exports = mongoose.model("Hype", apparelSchema);

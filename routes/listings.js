@@ -4,7 +4,7 @@ var apparel = require("../models/apparel")
 var middleware = require("../middleware")
 
 
-router.get("/apparel", function(req, res){
+router.get("/", function(req, res){
    res.render("landing"); 
 });
 

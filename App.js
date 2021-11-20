@@ -52,4 +52,4 @@ app.listen(process.env.PORT,process.env.IP, function(){
 });
 const PORT = 8080;
 const HOST = 'localhost';
-app.listen(PORT, HOST, () => console.log("listening " + PORT));
+app.listen(PORT, HOST, "/apparel" () => console.log("listening " + PORT));
