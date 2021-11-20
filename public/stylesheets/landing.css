@@ -1,0 +1,14 @@
+body{
+    background-color: black;
+}
+
+h1{
+    color:white;
+}
+
+#landing-header{
+    z-index: 1;
+    position:relative;
+    padding-top: 40vh;
+    text-align:center;
+}
