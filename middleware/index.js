@@ -16,7 +16,7 @@ middlewareObj.checkapparelOwnership = function(req,res,next){
         apparel.findById(req.params.id, function(err, foundapparel){
             console.log(foundapparel.author.id);
             if(err){
-                req.flash("error", "Campground not found.");
+                req.flash("error", "Listing not found.");
                 console.log(err);
                 res.redirect("back");
             }else{
