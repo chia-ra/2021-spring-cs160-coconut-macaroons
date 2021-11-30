@@ -11,7 +11,7 @@
             <div class="thumbnail">
                 <img class="img-responsive" src="<%= apparel.image %>">
                 <div class="caption-full">
-                    <h4 class="pull-right">$150 average price</h4>
+                    <h4 class="pull-right">Price:</h4>
                     <h4><a><%=apparel.name%></a></h4>
                     <p><%= apparel.description %></p>
                     <p><em>Submitted by <%=apparel.author.username%></em></p>
@@ -32,7 +32,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <strong><%= comment.author.username %></strong>
-                            <span class="pull-right">10 days ago</span>
+                            <span class="pull-right">just now</span>
                             <p>
                                 <%= comment.text %>
                             </p>
